@@ -463,8 +463,9 @@ public class TugasRabbitMQClient {
         public void run() {
             while (!isInterrupted()){
                 try {
+                    String notiftext = receive();
                     System.out.println("[NOTIFICATION]");
-                    System.out.println(receive());
+                    System.out.println(notiftext);
                     System.out.println("[END OF NOTIFICATION] see text above notification for menu");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
