@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TugasRabbitMQServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TugasRabbitMQServer_jar</output-path>
+    <root id="archive" name="TugasRabbitMQServer.jar">
+      <element id="module-output" name="TugasRabbitMQServer" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/amqp-client-3.6.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/json-simple-1.1.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

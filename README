@@ -1,0 +1,172 @@
+================================
+|  Aplikasi Instant Messaging  |
+|    Sederhana  Menggunakan    |
+|          RabbitMQ            |
+|                              |
+|           IF4031             |
+|            oleh              |
+|      Muhammad  Nizami        |
+|          13512501            |
+|   Prodi Teknik Informatika   |
+|    Sekolah Teknik Elektro    |
+|       dan Informatika        |
+|  Institut Teknologi Bandung  |
+|       3 November 2016        |
+================================
+
+Daftar Isi
+I. Desain Aplikasi
+II. Petunjuk Instalasi
+III. Cara Menjalankan Program
+IV. Pengujian
+
+(gunakan fungsi find pada text editor Anda untuk mempermudah membaca bagian tertentu)
+
+
+
+I. Desain Aplikasi
+
+Aplikasi ini terdiri dari dua program, yaitu program client dan program server. Program client dan program server berhubungan melalui sebuah server RabbitMQ. Instans server yang dijalankan sebanyak satu buah. Instan client dapat dijalankan beberapa buah.
+
+
+                                                                       
+       --------                           --------                    
+       |Client|                           |server|                    
+       --------\                         /--------                     
+                \                       /                              
+                 \                     /                               
+               --------------------------                              
+               |     RabbitMQ Server    |                           
+               --------------------------                              
+                                                                       
+
+Server mengonsumsi antrian serverQueue. Untuk tiap client, terdapat dua buah queue yang ia konsumsi, yaitu clientQueue dan notifQueue. (Nama queue disesuaikan dengan saat memprogram).
+                                                                       
+                                                                       
+       Client1<-------clientQueue1<--------------\                           
+        \     <--                                 \                    
+         \       \----notifQueue1<--------------\  \                   
+          \                                      \  \                  
+           \                                      \  \                 
+            \                                      \  \                
+             -------->serverQueue----------------->server             
+            /                                      /  /                
+           /                                      /  /                 
+          /                                      /  /                  
+         /        /---clientQueue2<-------------/  /                   
+        /     <--/                             /  /                 
+       Client2<-------notifQueue2<---------------/                     
+
+
+Secara umum, server dan client berhubungan dengan dua cara: request-response dan push notifications.
+Pada request-response, client mengirimkan perintah kepada server melalui serverQueue, lalu server memproses perintah, dan menuliskan respon pada clientQueue. Client mengonsumsi respon pada clientQueue.
+Pada saat yang sama, client memiliki thread yang bertugas mendengarkan push notifications pada notifQueue. Server menuliskan push notifications pada notifQueue.
+
+Perintah dan respon dituliskan dalam sebuah format JSON. Masing-masing perintah membutuhkan argumen yang berbeda. Berikut ini perintah-perintah yang dapat dikirimkan kepada server:
+ * LOGIN
+ * REGISTER
+ * ADD_FRIEND
+ * CREATE_GROUP
+ * ADD_MEMBER
+ * KICK_MEMBER
+ * SEND_MESSAGE
+ * GET_FRIENDS
+ * GET_GROUPS
+ * GET_ADMINISTERED_GROUPS
+ * GET_GROUP_MEMBERS
+ * POP_NOTIFS
+Pada awalnya, klien dan server sama-sama memiliki informasi tentang serverQueue. Setelah itu, klien akan membuat clientQueue dan notifQueue.
+Pada saat mengirimkan perintah, klien menyertakan informasi clientQueue dan notifQueue-nya, sehingga server dapat mengidentifikasi klien, queue untuk respon dan push notification-nya, dan mencatat session berdasarkan informasi tersebut.
+
+Antarmuka pengguna klien dibuat dengan CLI. Klien beroperasi atas perintah pengguna ataupun push notification dari server.
+Perintah yang dapat diberikan pengguna adalah sebagai berikut, dengan pengguna memasukkan nomor-nya.
+1. login
+2. register
+3. add friend
+4. create group
+5. add group member
+6. kick group member
+7. send message
+8. see notifications
+0. exit
+Adapun push notifications akan langsung ditampilkan pada pengguna.
+
+Untuk menyederhanakan persoalan, data yang ada pada server tidak persisten. Bila server dimatikan, seluruh data akun, grup, daftar teman, dan lain-lain pada server akan hilang.
+
+II. Petunjuk Instalasi
+Aplikasi ini dibangun menggunakan IDE IntelliJ IDEA. IntelliJ IDEA dapat diunduh di http://www.jetbrains.com/idea/download/
+Terdapat dua project: TugasRabbitMQClient dan TugasRabbitMQServer, buka keduanya menggunakan IDE tersebut. Lakukan "Build->Build Artifact". Program akan terletak sebagai berikut:
+server: TugasRabbitMQServer/out/artifacts/TugasRabbitMQServer_jar/TugasRabbitMQServer.jar
+klien: TugasRabbitMQClient/out/artifacts/TugasRabbitMQClient_jar/TugasRabbitMQClient.jar
+
+III. Cara Menjalankan Program
+Program server dan klien menerima tiga argumen dengan cara sebagai berikut.
+server:
+TugasRabbitMQServer/out/artifacts/TugasRabbitMQServer_jar/TugasRabbitMQServer.jar [RabbitMQServerHostName] [RabbitMQServerPort] [ServerQueueName]
+klien:
+TugasRabbitMQClient/out/artifacts/TugasRabbitMQClient_jar/TugasRabbitMQClient.jar [RabbitMQServerHostName] [RabbitMQServerPort] [ServerQueueName]
+
+RabbitMQServerHostName dan RabbitMQServerPort adalah hostname dan port untuk server RabbitMQ yang digunakan. Sesuaikan kedua argumen ini dengan konfigurasi server RabbitMQ yang digunakan.
+ServerQueueName ditentukan sendiri. Pastikan ServerQueueName tidak bentrok dengan queue aplikasi lain di server RabbitMQ yang digunakan.
+
+khusus untuk pengujian, telah disiapkan sebuah script Test.sh yang menjalankan sebuah server dan beberapa instans klien pada gnome-terminal dengan server RabbitMQ localhost:5672. Konfigurasi script Test.sh ini dapat disesuaikan dengan kebutuhan.
+
+IV. Pengujian
+Sebelum pengujian dilakukan, 4 instans klien (akan disebut klien 1, klien 2, klien 3, klien 4) dan 1 server dijalankan dengan menjalankan script Test.sh. Lalu, dilakukan pengujian-pengujian berikut ini secara berurutan:
+1. Register akun baru
+   Langkah: gunakan klien 1 untuk register dengan loginName 'aa' dan password 'aapassword'
+   Hasil yang diharapkan: sukses
+2. Register akun baru
+   Langkah: gunakan klien 1 untuk register dengan loginName 'ab' dan password 'abpassword'
+   Hasil yang diharapkan: sukses
+3. Register akun baru dengan nama sama
+   Langkah: gunakan klien 1 untuk register dengan loginName 'ab' dan password 'abpassword'
+   Hasil yang diharapkan: gagal dan muncul pesan error
+4. Register akun baru dengan nama sama dari klien berbeda
+   Langkah: gunakan klien 2 untuk register dengan loginName 'ab' dan password 'abpassword'
+   Hasil yang diharapkan: gagal dan muncul pesan error
+5. Login dengan loginName salah
+   Langkah: gunakan klien 1 untuk login dengan loginName 'aapalsu' dan password 'aapassword'
+   Hasil yang diharapkan: gagal dan muncul pesan error
+6. Login dengan password salah
+   Langkah: gunakan klien 1 untuk login dengan loginName 'aa' dan password 'abpassword'
+   Hasil yang diharapkan: gagal dan muncul pesan error
+7. Login
+   Langkah: gunakan klien 1 untuk login dengan loginName 'aa' dan password 'aapassword'
+   Hasil yang diharapkan: sukses
+8. Login
+   Langkah: gunakan klien 2 untuk login dengan loginName 'ab' dan password 'abpassword'
+   Hasil yang diharapkan: sukses
+9. Add friend dan notifikasinya
+   Langkah:
+      -register dan login akun 'ac' dengan password 'acpassword' pada klien 3
+      -gunakan klien 1 untuk add friend 'ab'
+   Hasil yang diharapkan:
+      -sukses
+      -klien 2 menerima notifikasi
+      -klien 3 tidak menerima notifikasi
+10. Buat grup
+   Langkah:
+      -gunakan klien 1 untuk membuat grup dengan nama 'tesgrup', dengan member 'ab' dan 'ac'
+   Hasil yang diharapkan: sukses
+11. Add group member
+   Langkah:
+      -gunakan klien 4 untuk register dan login akun 'ad' dengan password 'adpassword'
+      -gunakan klien 1 untuk add 'ad' ke grup 'tesgrup'
+   Hasil yang diharapkan: sukses
+12. Kick group member
+      -gunakan klien 1 untuk kick 'ab' dari grup 'tesgrup'
+   Hasil yang diharapkan: sukses
+13. Send private message
+   Langkah:
+      -gunakan klien 1 untuk kirim pesan kepada 'ab' berisi 'aa kepada ab'
+      -gunakan klien 2 untuk kirim pesan kepada 'aa' berisi 'ab kepada aa, copy'
+   Hasil yang diharapkan:
+      - klien 2 menunjukkan notifikasi pesan dari 'aa' berisi 'aa kepada ab'
+      - klien 1 menunjukkan notifikasi pesan dari 'ab' berisi 'ab kepada aa, copy'
+      - klien lain tidak menerima pesan
+14. Send group message
+   Langkah:
+      - gunakan klien 4 untuk mengirim pesan kepada grup 'tesgrup' berisi 'tespesan'
+   Hasil yang diharapkan:
+      - klien 1, klien 3 dan klien 4 menerima pesan 'tespesan'

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TugasRabbitMQClient:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9e92dfe0-6efa-4c2f-835c-cc90fea69bb1" name="Default" comment="" />
     <ignored path="TugasRabbitMQClient.iws" />
@@ -67,7 +72,7 @@
       <file leaf-file-name="TugasRabbitMQClient.iml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TugasRabbitMQClient.iml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
+            <state line="2" column="0" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="300">
               <folding />
             </state>
           </provider>
@@ -76,7 +81,7 @@
       <file leaf-file-name="TugasRabbitMQClient.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TugasRabbitMQClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="467" column="48" selection-start="15530" selection-end="15530" vertical-scroll-proportion="1.0688705" vertical-offset="6617" max-vertical-offset="7230">
+            <state line="31" column="61" selection-start="1177" selection-end="1177" vertical-scroll-proportion="0.13513513" vertical-offset="390" max-vertical-offset="7230">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,7 +92,7 @@
       <file leaf-file-name="OpNum.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OpNum.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="44" selection-start="675" selection-end="675" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+            <state line="5" column="0" selection-start="126" selection-end="678" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
               <folding />
             </state>
           </provider>
@@ -109,10 +114,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="51" />
-    <option name="y" value="24" />
-    <option name="width" value="1315" />
-    <option name="height" value="744" />
+    <option name="x" value="90" />
+    <option name="y" value="192" />
+    <option name="width" value="1305" />
+    <option name="height" value="686" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -140,6 +145,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -192,8 +199,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -204,7 +209,7 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../TugasRabbitMQServer" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="options.lastSelected" value="preferences.pathVariables" />
@@ -382,8 +387,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="51" y="24" width="1315" height="744" extended-state="6" />
-    <editor active="false" />
+    <frame x="90" y="192" width="1305" height="686" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -398,7 +403,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24980362" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25178146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -440,6 +445,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TugasRabbitMQClient.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="467" column="48" selection-start="15530" selection-end="15530" vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="7230">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OpNum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="44" selection-start="675" selection-end="675" vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TugasRabbitMQClient.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TugasRabbitMQClient.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="125" column="24" selection-start="4175" selection-end="4175" vertical-scroll-proportion="0.0" vertical-offset="2072" max-vertical-offset="6375">
           <folding>
             <element signature="imports" expanded="true" />
@@ -472,16 +500,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/libraries/amqp_client_3_6_5.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="628">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OpNum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="44" selection-start="675" selection-end="675" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="628" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TugasRabbitMQClient.iml">
@@ -491,9 +510,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/OpNum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="126" selection-end="678" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/TugasRabbitMQClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="467" column="48" selection-start="15530" selection-end="15530" vertical-scroll-proportion="1.0688705" vertical-offset="6617" max-vertical-offset="7230">
+        <state line="31" column="61" selection-start="1177" selection-end="1177" vertical-scroll-proportion="0.13513513" vertical-offset="390" max-vertical-offset="7230">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -506,10 +532,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>TugasRabbitMQClient:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
