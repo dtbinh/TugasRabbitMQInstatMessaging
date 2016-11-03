@@ -102,6 +102,9 @@ public class TugasRabbitMQServer {
                     case OpNum.GET_GROUP_MEMBERS:
                         getGroupMembers(op);
                         break;
+                    case OpNum.POP_NOTIFS:
+                        popNotifs(op);
+                        break;
                     default:
                         invalidOp(op);
                         break;
@@ -110,6 +113,21 @@ public class TugasRabbitMQServer {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void popNotifs(JSONObject op) throws IOException {
+        Client client = prepareClient(op);
+
+        Account account = client.account;
+        JSONObject response;
+        if (account==null){
+            response = notLoggedInResponse;
+            System.out.println(accountTable);
+        }else{
+            response = successResponse();
+            response.put("notif",account.popNotifications());
+        }
+        client.send(response.toJSONString());
     }
 
     private void getGroupMembers(JSONObject op) throws IOException {
@@ -312,7 +330,7 @@ public class TugasRabbitMQServer {
             System.out.println(accountTable);
         }else if (account.passwordCorrect(password)){
             response = successResponse();
-            client.account = account;
+            client.associate(account);
             response.put("notif",account.popNotifications());
         }else{
             response = createResponseJSON(0,"password incorrect");
@@ -393,21 +411,22 @@ public class TugasRabbitMQServer {
             return clients.get(queue);
     }
 
-    Client putNewClient(String queue) throws IOException {
-        Client client = new Client(channel,queue,null);
+    Client putNewClient(String queue, String notifQueue) throws IOException {
+        Client client = new Client(channel,queue,null,notifQueue);
         clients.put(queue, client);
         return client;
     }
 
-    Client putNewClient(String queue, Account account) throws IOException {
-        Client client = new Client(channel,queue,account);
+    Client putNewClient(String queue, Account account, String notifQueue) throws IOException {
+        Client client = new Client(channel,queue,account, notifQueue);
         clients.put(queue, client);
         return client;
     }
 
     Client putNewClient(JSONObject op) throws IOException {
         String clientQueueName = (String) op.get("clientQueue");
-        return putNewClient(clientQueueName);
+        String notifQueue = (String) op.get("notifQueue");
+        return putNewClient(clientQueueName,notifQueue);
     }
 
     JSONObject createResponseJSON(int status, String message){

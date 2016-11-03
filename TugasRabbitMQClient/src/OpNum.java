@@ -14,4 +14,5 @@ public class OpNum {
     public static final int GET_GROUPS = 9;
     public static final int GET_ADMINISTERED_GROUPS = 10;
     public static final int GET_GROUP_MEMBERS = 11;
+    public static final int POP_NOTIFS =    12;
 }

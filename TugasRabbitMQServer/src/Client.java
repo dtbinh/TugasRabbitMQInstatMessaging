@@ -8,12 +8,17 @@ import java.io.IOException;
 public class Client {
     Channel channel;
     String queue;
+    String notifQueue;
     Account account;
 
-    public Client(Channel channel, String queue, Account account) throws IOException {
+    public Client(Channel channel, String queue, Account account, String notifQueue) throws IOException {
         this.channel = channel;
         this.queue = queue;
         this.account = account;
+        this.notifQueue = notifQueue;
+        if (account != null){
+            account.client = this;
+        }
     }
 
     public void send(String message){
@@ -22,5 +27,19 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void notify(String notification) {
+        try {
+            System.out.println("notify client");
+            channel.basicPublish("", notifQueue, null, notification.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void associate(Account account){
+        this.account = account;
+        account.client = this;
     }
 }

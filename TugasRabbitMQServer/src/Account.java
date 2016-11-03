@@ -10,6 +10,7 @@ import java.util.List;
 public class Account {
     String loginName;
     String password;
+    Client client;
 
     private List<String> notifications;
     public List<Account> friends;
@@ -27,21 +28,27 @@ public class Account {
 
     public void sendMessage(Account sender, String msg){
         String notification = "Message from " + sender.loginName + ":\n"+msg;
-        notifications.add(notification);
+        notify(notification);
     }
 
     public void sendMessage(Account sender, Group group, String msg){
         String notification = "Message from " + sender.loginName + " via "+ group.name + ":\n"+msg;
-        notifications.add(notification);
+        notify(notification);
     }
 
     public void notifyAddFriend(Account adder){
         String notification = adder.loginName + " added you as a friend";
-        notifications.add(notification);
+        notify(notification);
     }
 
     public void notify(String notification){
         notifications.add(notification);
+        if (client != null)
+        if (client.account == this){
+            client.notify(notification);
+        }else{
+            client = null;
+        }
     }
 
     public List<String> popNotifications(){

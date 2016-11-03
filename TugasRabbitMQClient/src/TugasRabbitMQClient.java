@@ -32,9 +32,11 @@ public class TugasRabbitMQClient {
         channel.queueDeclare(ServerQueueName, false, false, false, null);
         AMQP.Queue.DeclareOk clientQueueInfo = channel.queueDeclare();
         String clientQueue = clientQueueInfo.getQueue();
+        AMQP.Queue.DeclareOk notifQueueInfo = channel.queueDeclare();
+        String notifQueue = notifQueueInfo.getQueue();
         Scanner sc = new Scanner(System.in);
 
-        TugasRabbitMQClient tugasRabbitMQClient = new TugasRabbitMQClient(clientQueue,ServerQueueName,channel, sc);
+        TugasRabbitMQClient tugasRabbitMQClient = new TugasRabbitMQClient(clientQueue,ServerQueueName,channel, sc,notifQueue);
 
         tugasRabbitMQClient.mainLoop();
 
@@ -44,22 +46,30 @@ public class TugasRabbitMQClient {
         connection.close();
     }
 
-    public TugasRabbitMQClient(String clientQueue, String serverQueue, Channel channel, Scanner sc) throws IOException {
+    public TugasRabbitMQClient(String clientQueue, String serverQueue, Channel channel, Scanner sc, String notifQueue) throws IOException {
         this.clientQueue = clientQueue;
         this.serverQueue = serverQueue;
         this.channel = channel;
         this.sc = sc;
+        this.notifQueue = notifQueue;
         queueingConsumer = new QueueingConsumer(channel);
         channel.basicConsume(clientQueue,true,queueingConsumer);
+        notifQueueingConsumer = new QueueingConsumer(channel);
+        channel.basicConsume(notifQueue,true,notifQueueingConsumer);
     }
 
     String clientQueue;
     String serverQueue;
     Channel channel;
     Scanner sc;
+    String notifQueue;
     QueueingConsumer queueingConsumer;
+    QueueingConsumer notifQueueingConsumer;
     public void mainLoop() throws InterruptedException {
+        NotifThread notifThread = new NotifThread();
+        notifThread.start();
         while (userAction()){}
+        notifThread.interrupt();
     }
 
     public boolean userAction() throws InterruptedException {
@@ -70,7 +80,8 @@ public class TugasRabbitMQClient {
                 "4. create group\n" +
                 "5. add group member\n" +
                 "6. kick group member\n" +
-                "7. send message\n"+
+                "7. send message\n" +
+                "8. see notifications\n"+
                 "0. exit\n" +
                 "type in number:");
         if (sc.hasNextInt()){
@@ -97,11 +108,35 @@ public class TugasRabbitMQClient {
                 case 7:
                     sendMessage();
                     break;
+                case 8:
+                    seeNotifs();
+                    break;
                 case 0:
                     return false;
             }
         }
         return true;
+    }
+
+    private void seeNotifs() throws InterruptedException {
+        JSONObject op = createOpJSON(OpNum.POP_NOTIFS);
+        send(op.toJSONString());
+        //receive response
+        String response = receive();
+        JSONObject responseJSON = createResponseJSON(response);
+        Long status = (Long) responseJSON.get("status");
+        if (status==1){
+            System.out.println("success");
+
+            //display notifications
+            JSONArray notif = (JSONArray) responseJSON.get("notif");
+            System.out.println("NOTIFICATIONS: " + notif.size() + " new");
+            for (Object str : notif){
+                System.out.println(str);
+            }
+        }else{
+            System.out.println(responseJSON.get("message"));
+        }
     }
 
     private void addGroupMember() throws InterruptedException {
@@ -387,6 +422,7 @@ public class TugasRabbitMQClient {
     public JSONObject createOpJSON(int opNum){
         JSONObject retval = new JSONObject();
         retval.put("clientQueue", clientQueue);
+        retval.put("notifQueue",notifQueue);
         retval.put("opNum",opNum);
         return retval;
     }
@@ -413,7 +449,27 @@ public class TugasRabbitMQClient {
     public String receive() throws InterruptedException {
         String recv;
         recv = new String(queueingConsumer.nextDelivery().getBody());
-        System.out.println("received: " + recv);
         return recv;
+    }
+
+    class NotifThread extends Thread{
+        public NotifThread(){}
+        public String receive() throws InterruptedException {
+            String recv;
+            recv = new String(notifQueueingConsumer.nextDelivery().getBody());
+            return recv;
+        }
+
+        public void run() {
+            while (!isInterrupted()){
+                try {
+                    System.out.println("[NOTIFICATION]");
+                    System.out.println(receive());
+                    System.out.println("[END OF NOTIFICATION] see text above notification for menu");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+         }
     }
 }
